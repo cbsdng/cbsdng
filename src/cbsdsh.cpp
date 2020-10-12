@@ -1,13 +1,16 @@
+#include <unistd.h>
+
 #include <cbsdng/message.h>
 #include <cbsdng/shell/parser.h>
 #include <cbsdng/shell/shell.h>
 #include <cbsdng/shell/socket.h>
 
+
 int main(int argc, char **argv)
 {
   Parser parser;
   parser.parse(argc, argv);
-  Socket socket("/tmp/cbsd.sock");
+  Socket socket(parser.socket());
   if (parser.subcommandsSize() == 0)
   {
     Shell shell(parser, socket);

@@ -1,14 +1,16 @@
-#include <cbsdng/shell/shell.h>
-
 #include <iostream>
 #include <replxx.hxx>
 #include <vector>
 
+#include <cbsdng/shell/shell.h>
+
+
 Shell::Shell(Parser &p, Socket &s) : parser{p}, socket{s} {}
+
 
 void Shell::run()
 {
-  std::cout << "Welcome to CBSD interactive shell" << std::endl;
+  std::cout << "Welcome to CBSD interactive shell\n";
   replxx::Replxx rx;
   rx.install_window_change_handler();
   char *raw_home = getenv("HOME");
