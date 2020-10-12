@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="124.35416mm"
+   height="124.35416mm"
+   viewBox="0 0 124.35416 124.35416"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="cbsdng.svg"
+   inkscape:export-filename="/usr/home/meka/cbsdng.png"
+   inkscape:export-xdpi="71.897881"
+   inkscape:export-ydpi="71.897881">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1035">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1"
+         offset="0"
+         id="stop1031" />
+      <stop
+         style="stop-color:#ffa600;stop-opacity:1"
+         offset="1"
+         id="stop1033" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1035"
+       id="linearGradient1037"
+       x1="73.487297"
+       y1="142.97919"
+       x2="98.773117"
+       y2="143.57921"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.8487676,0,0,2.8487676,-154.57139,-258.0602)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.50409836"
+     inkscape:cx="192.13638"
+     inkscape:cy="631.93887"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="3436"
+     inkscape:window-height="1401"
+     inkscape:window-x="0"
+     inkscape:window-y="18"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-54.99725,-92.932889)">
+    <g
+       id="g1097"
+       transform="matrix(0.99646744,0,0,0.9165757,0.41392486,18.307141)"
+       inkscape:label="CBSDng">
+      <path
+         style="mix-blend-mode:normal;fill:url(#linearGradient1037);fill-opacity:1;stroke-width:0.754923;stroke-miterlimit:4;stroke-dasharray:none"
+         d="m 83.158018,202.84095 -24.753142,-14.24962 -1.599811,-1.59907 -1.599782,-1.59907 -0.214227,-29.50913 -0.214228,-29.50916 0.829134,-3.99389 0.829134,-3.99385 3.153671,-3.40818 3.1537,-3.40816 25.998281,-15.076415 25.998312,-15.076419 1.51309,0.0114 1.51307,0.0114 26.69521,6.991388 26.69521,6.99136 0.8072,1.279667 0.8072,1.279666 -1.87538,1.786662 -1.87534,1.786661 -24.30084,13.65694 -24.30086,13.6569 -1.79048,0.44937 -1.79045,0.44939 -22.242352,-5.7094 -22.242351,-5.70935 H 70.75058 69.149203 l -1.507454,1.50745 -1.507483,1.50748 v 2.50669 2.50669 l 1.6959,1.54092 1.695929,1.54093 19.220265,10.73669 19.22029,10.73669 2.07277,2.18666 2.07279,2.18666 v 29.98681 29.98681 l -0.90449,0.90448 -0.90448,0.90449 h -1.19614 -1.19611 z m 40.411162,13.34511 -0.90448,-0.90449 v -29.98681 -29.98681 l 2.07279,-2.17219 2.07276,-2.17215 19.22031,-10.72951 19.22027,-10.72949 1.34841,-1.29308 1.34837,-1.29306 -0.44304,-1.15454 -0.44304,-1.15458 -6.36993,-3.57549 -6.36996,-3.57549 v -0.50816 -0.50814 l 4.26888,-2.55332 4.26885,-2.55332 5.57846,2.94252 5.57846,2.94252 2.77777,2.36328 2.77778,2.36325 v 31.72593 31.72595 l -1.88435,1.81219 -1.88434,1.81222 -24.3991,14.03362 -24.39911,14.03363 h -1.26562 -1.26565 z"
+         id="path198" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="143.83423"
+         y="98.21476"
+         id="text1046"
+         transform="rotate(33.614725)"
+         inkscape:transform-center-x="-11.603657"
+         inkscape:transform-center-y="2.5300429"><tspan
+           sodipodi:role="line"
+           id="tspan1044"
+           x="143.83423"
+           y="98.21476"
+           style="font-weight:bold;fill:#ffffff;fill-opacity:1;stroke-width:0.264583">bhyve</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="44.552315"
+         y="225.02451"
+         id="text1050"
+         transform="rotate(-28.987832)"
+         inkscape:transform-center-x="-15.336141"
+         inkscape:transform-center-y="28.612916"><tspan
+           sodipodi:role="line"
+           id="tspan1048"
+           x="44.552315"
+           y="225.02451"
+           style="font-weight:bold;fill:#ffffff;fill-opacity:1;stroke-width:0.264583">jail</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="18.83663"
+         y="155.54251"
+         id="text1054"
+         transform="rotate(-32.661195)"><tspan
+           sodipodi:role="line"
+           id="tspan1052"
+           x="18.83663"
+           y="155.54251"
+           style="font-weight:bold;fill:#ffffff;fill-opacity:1;stroke-width:0.264583">CBSDng</tspan></text>
+    </g>
+  </g>
+</svg>

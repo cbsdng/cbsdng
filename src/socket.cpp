@@ -1,5 +1,3 @@
-#include <cbsdng/shell/socket.h>
-
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
@@ -8,6 +6,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
+
+#include <cbsdng/shell/socket.h>
+
 
 Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
 {
@@ -31,7 +32,9 @@ Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
   }
 }
 
+
 Socket::~Socket() { close(fd); }
+
 
 bool Socket::write(const std::string &data)
 {
@@ -63,11 +66,13 @@ bool Socket::write(const std::string &data)
   return true;
 }
 
+
 Socket &operator<<(Socket &sock, const Message &message)
 {
   sock.write(message.data());
   return sock;
 }
+
 
 Socket &operator>>(Socket &sock, Message &message)
 {
