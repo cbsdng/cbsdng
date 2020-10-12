@@ -1,7 +1,7 @@
 #pragma once
 
-#include "message.h"
-#include "socket.h"
+#include <cbsdng/message.h>
+#include <cbsdng/shell/socket.h>
 
 #include <string>
 

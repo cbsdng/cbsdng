@@ -1,2 +1,5 @@
 *.o
 .depend*
+cbsdngsh
+cbsdngsh.full
+cbsdngsh.debug
