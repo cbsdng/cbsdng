@@ -8,13 +8,14 @@ static CLI::App app("CBSD shell");
 Parser::Parser() : _socket{"/var/run/cbsdng/cbsdng.sock"}
 {
   app.set_help_all_flag("--help-all", "Expand all help");
-  auto construct = app.add_subcommand("construct", "Construct resource");
+  auto construct = app.add_subcommand("construct", "Construct instance");
   construct->add_option("jail", _jails, "Jail name")->required();
-  auto start = app.add_subcommand("start", "Start resource");
+  auto start = app.add_subcommand("start", "Start instance");
   start->add_option("jail", _jails, "Jail name")->required();
-  auto stop = app.add_subcommand("stop", "Stop resource");
+  auto stop = app.add_subcommand("stop", "Stop instance");
   stop->add_option("jail", _jails, "Jail name")->required();
   app.add_option("-s,--socket", _socket, "Socket to connect to");
+  app.add_subcommand("ls", "List instances");
 }
 
 
