@@ -27,6 +27,9 @@ int main(int argc, char **argv)
     Message message;
     message.data(0, 0, data);
     socket << message;
+
+    socket >> message;
+    std::cout << message.getpayload();
   }
   return 0;
 }

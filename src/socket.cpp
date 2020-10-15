@@ -16,8 +16,8 @@ Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
 
   if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
   {
-    perror("socket error");
-    exit(-1);
+    std::cerr << "socket error: " << strerror(errno) << '\n';
+    exit(1);
   }
 
   memset(&addr, 0, sizeof(addr));
@@ -28,12 +28,36 @@ Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
   {
     std::cerr << "Connecting to " << socketPath << " failed: ";
     std::cerr << strerror(errno) << std::endl;
-    exit(-1);
+    exit(1);
   }
 }
 
 
 Socket::~Socket() { close(fd); }
+
+
+const Message Socket::read(size_t size)
+{
+  Message message;
+  int r;
+  char *buffer = new char[size+1];
+  std::stringstream sstr;
+  while ((r = ::read(fd, buffer, size)) > 0)
+  {
+    buffer[r] = '\0';
+    sstr << buffer;
+  }
+  int id;
+  int type;
+  std::string data;
+  sstr >> id >> type;
+  size_t pos = sstr.tellg();
+  sstr.seekg(pos + 1);
+  getline(sstr, data, '\0');
+  message.data(0, 0, data);
+  delete []buffer;
+  return message;
+}
 
 
 bool Socket::write(const std::string &data)
@@ -51,18 +75,6 @@ bool Socket::write(const std::string &data)
     std::cerr << "Error: socket closed" << std::endl;
     return false;
   }
-  // char buffer[1024];
-  // auto receivedSize = recv(fd, buffer, sizeof(buffer), MSG_NOSIGNAL);
-  // if (receivedSize < 0)
-  // {
-  // std::cerr << "Error: " << strerror(errno) << std::endl;
-  // return false;
-  // }
-  // else if (receivedSize == 0)
-  // {
-  // std::cerr << "Error: socket closed" << std::endl;
-  // return false;
-  // }
   return true;
 }
 
@@ -76,6 +88,6 @@ Socket &operator<<(Socket &sock, const Message &message)
 
 Socket &operator>>(Socket &sock, Message &message)
 {
-  message.data(5, 8, "random");
+  message = sock.read();
   return sock;
 }

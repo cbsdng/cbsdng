@@ -53,7 +53,7 @@ void Shell::run()
         ok = false;
         break;
       }
-      std::cout << s << std::endl;
+      std::cout << s << '\n';
       if (s == "-h" or s == "--help" or s == "--help-all")
       {
         help = true;
