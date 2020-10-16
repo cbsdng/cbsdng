@@ -87,8 +87,11 @@ void Shell::run()
         Message message;
         message.data(0, 0, data);
         socket << message;
+        socket >> message;
+        std::cout << message.getpayload();
       }
     }
+    socket.open();
   }
   rx.history_save(history_file);
 }
