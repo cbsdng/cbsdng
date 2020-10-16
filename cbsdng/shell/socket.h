@@ -11,6 +11,7 @@ public:
   Socket(const std::string &socketPath);
   ~Socket();
 
+  void open();
   const Message read(size_t size = 1024);
   bool write(const std::string &data);
 

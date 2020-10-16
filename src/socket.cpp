@@ -12,6 +12,12 @@
 
 Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
 {
+  open();
+}
+
+
+void Socket::open()
+{
   struct sockaddr_un addr;
 
   if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
@@ -27,13 +33,10 @@ Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
   if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
   {
     std::cerr << "Connecting to " << socketPath << " failed: ";
-    std::cerr << strerror(errno) << std::endl;
+    std::cerr << strerror(errno) << '\n';
     exit(1);
   }
 }
-
-
-Socket::~Socket() { close(fd); }
 
 
 const Message Socket::read(size_t size)
@@ -91,3 +94,6 @@ Socket &operator>>(Socket &sock, Message &message)
   message = sock.read();
   return sock;
 }
+
+
+Socket::~Socket() { close(fd); }
