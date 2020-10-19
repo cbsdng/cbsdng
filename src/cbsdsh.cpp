@@ -1,4 +1,4 @@
-#include <unistd.h>
+#include <iostream>
 
 #include <cbsdng/message.h>
 #include <cbsdng/shell/parser.h>
@@ -30,6 +30,17 @@ int main(int argc, char **argv)
 
     socket >> message;
     std::cout << message.getpayload();
+
+    data = parser.subcommandName(0);
+    if (data == "ls")
+    {
+      socket.open();
+      message.data(0, Type::BHYVE, data);
+      socket << message;
+
+      socket >> message;
+      std::cout << message.getpayload();
+    }
   }
   return 0;
 }
