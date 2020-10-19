@@ -65,17 +65,15 @@ const Message Socket::read(size_t size)
 
 bool Socket::write(const std::string &data)
 {
-  std::stringstream s;
-  s << data.size() << ' ' << data;
-  auto sentSize = send(fd, s.str().data(), s.str().size(), MSG_NOSIGNAL);
+  auto sentSize = send(fd, data.data(), data.size(), MSG_NOSIGNAL);
   if (sentSize < 0)
   {
-    std::cerr << "Error: " << strerror(errno) << std::endl;
+    std::cerr << "Error: " << strerror(errno) << '\n';
     return false;
   }
   else if (sentSize == 0)
   {
-    std::cerr << "Error: socket closed" << std::endl;
+    std::cerr << "Error: socket closed!\n";
     return false;
   }
   return true;
