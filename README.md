@@ -9,6 +9,10 @@ To denotify message dirrection, in the documentation the following arrows will b
 They are not used in the protocol, but are just there to help understanding the messages/protocol.
 
 ```
---> <size> <jail name> ls
-<-- <size> <jail name> <output>
+--> <size> ls
+<-- <size> <output>
+```
+```
+--> <size> start <jail>
+<-- <size> <output>
 ```
