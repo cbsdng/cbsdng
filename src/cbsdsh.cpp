@@ -27,9 +27,12 @@ int main(int argc, char **argv)
     Message message;
     message.data(0, 0, data);
     socket << message;
-
     socket >> message;
-    std::cout << message.getpayload();
+    while (message.gettype() != -1)
+    {
+      std::cout << message.getpayload() << std::flush;
+      socket >> message;
+    }
 
     data = parser.subcommandName(0);
     if (data == "ls")
@@ -37,9 +40,12 @@ int main(int argc, char **argv)
       socket.open();
       message.data(0, Type::BHYVE, data);
       socket << message;
-
       socket >> message;
-      std::cout << message.getpayload();
+      while (message.gettype() != -1)
+      {
+        std::cout << message.getpayload() << std::flush;
+        socket >> message;
+      }
     }
   }
   return 0;

@@ -42,14 +42,15 @@ void Socket::open()
 const Message Socket::read(size_t size)
 {
   Message message;
-  int r;
   char *buffer = new char[size+1];
   std::stringstream sstr;
-  while ((r = ::read(fd, buffer, size)) > 0)
+  int r = ::read(fd, buffer, size);
+  if (r <= 0)
   {
-    buffer[r] = '\0';
-    sstr << buffer;
+    return Message(0, -1, "");
   }
+  buffer[r] = '\0';
+  sstr << buffer;
   int id;
   int type;
   std::string data;
