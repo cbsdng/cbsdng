@@ -11,7 +11,9 @@
 #include <cbsdng/shell/socket.h>
 
 
-Socket::Socket(const std::string &socket_path) : socketPath{socket_path}
+Socket::Socket(const std::string &socket_path)
+  : socketPath{socket_path}
+  , fd{-1}
 {
   open();
 }
@@ -108,4 +110,11 @@ Socket &operator>>(Socket &sock, Message &message)
 }
 
 
-Socket::~Socket() { close(fd); }
+Socket::~Socket()
+{
+  if (fd != -1)
+  {
+    close(fd);
+    fd = -1;
+  }
+}
