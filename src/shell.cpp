@@ -53,20 +53,19 @@ void Shell::run()
         ok = false;
         break;
       }
-      std::cout << s << '\n';
       if (s == "-h" or s == "--help" or s == "--help-all")
       {
         help = true;
       }
       args.insert(args.begin(), s);
     }
+    if (help)
+    {
+      continue;
+    }
     if (ok)
     {
       auto rc = parser.parse(args);
-      if (help)
-      {
-        continue;
-      }
       if (rc == 0)
       {
         rx.history_add(raw_input);
@@ -89,6 +88,14 @@ void Shell::run()
         socket << message;
         socket >> message;
         std::cout << message.getpayload();
+        if (data == "ls")
+        {
+          socket.open();
+          message.data(0, Type::BHYVE, data);
+          socket << message;
+          socket >> message;
+          std::cout << message.getpayload() << std::flush;
+        }
       }
     }
     socket.open();
