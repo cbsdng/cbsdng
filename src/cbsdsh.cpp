@@ -24,6 +24,8 @@ int main(int argc, char **argv)
       data += ' ';
       data += jail;
     }
+    data += ' ';
+    data += parser.jail();
     Message message;
     message.data(0, 0, data);
     socket << message;

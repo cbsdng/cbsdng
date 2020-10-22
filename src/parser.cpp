@@ -16,6 +16,8 @@ Parser::Parser() : _socket{"/var/run/cbsdng/cbsdng.sock"}
   stop->add_option("jail", _jails, "Jail name")->required();
   app.add_option("-s,--socket", _socket, "Socket to connect to");
   app.add_subcommand("ls", "List instances");
+  auto login = app.add_subcommand("login", "Login into the instance");
+  login->add_option("jail", _jail, "Jail name")->required();
 }
 
 
@@ -65,4 +67,5 @@ int Parser::subcommandsSize()
 
 std::map<std::string, std::string> Parser::options() { return _options; }
 std::vector<std::string> Parser::jails() { return _jails; }
+std::string Parser::jail() { return _jail; }
 const std::string & Parser::socket() const { return _socket; }
