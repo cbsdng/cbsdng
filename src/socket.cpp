@@ -14,8 +14,31 @@
 Socket::Socket(const std::string &socket_path)
   : socketPath{socket_path}
   , fd{-1}
+  , kq{-1}
 {
+  events = new struct kevent[2];
+  targetEvent = new struct kevent;
+  kq = kqueue();
+  if (kq == -1)
+  {
+    std::stringstream error;
+    error << "kqueue: " << strerror(errno) << '\n';
+    cleanup();
+    throw error.str();
+  }
+  EV_SET(events, STDIN_FILENO, EVFILT_READ, EV_ADD | EV_CLEAR, NOTE_READ, 0, nullptr);
   open();
+}
+
+
+void Socket::cleanup()
+{
+  if (fd != -1)
+  {
+    close(fd);
+    fd = -1;
+  }
+  EV_SET(events + 1, fd, EVFILT_READ, EV_DELETE | EV_CLEAR, NOTE_READ, 0, nullptr);
 }
 
 
@@ -36,46 +59,53 @@ void Socket::open()
     std::cerr << strerror(errno) << '\n';
     exit(1);
   }
+  EV_SET(events + 1, fd, EVFILT_READ, EV_ADD | EV_CLEAR, NOTE_READ, 0, nullptr);
+  int ret = kevent(kq, events, 2, nullptr, 0, nullptr);
+  if (ret == -1)
+  {
+    std::stringstream error;
+    error << "kevent register: " << strerror(errno) << '\n';
+    cleanup();
+    throw error.str();
+  }
 }
 
 
 const Message Socket::read(size_t size)
 {
-  auto event = new struct kevent;
-  auto tevent = new struct kevent;
-  int kq = kqueue();
-  if (kq == -1) { std::cerr << "kqueue: " << strerror(errno) << '\n'; }
-  EV_SET(event, fd, EVFILT_READ, EV_ADD | EV_CLEAR, NOTE_READ, 0, nullptr);
-  int ret = kevent(kq, event, 2, nullptr, 0, nullptr);
-  if (ret == -1)
+  int ret;
+  while (true)
   {
-    std::cerr << "kevent register: " << strerror(errno) << '\n';
-    if (event->flags & EV_ERROR)
+    ret = kevent(kq, nullptr, 0, targetEvent, 1, nullptr);
+    if (targetEvent->ident == STDIN_FILENO)
     {
-      std::cerr << "kevent register: " << strerror(event->data) << '\n';
+      // TODO: handle keyboard
+      continue;
     }
-    return Message(0, -1, "");
+    else
+    {
+      if (ret == -1 || targetEvent->data == 0)
+      {
+        return Message(0, -1, "Error waiting on kevent.");
+      }
+      char *buffer = new char[targetEvent->data + 1];
+      ret = ::read(targetEvent->ident, buffer, targetEvent->data);
+      if (ret <= 0) { return Message(0, -1, "Error reading from socket."); }
+      buffer[ret] = '\0';
+      std::stringstream sstr;
+      sstr << buffer;
+      delete []buffer;
+      int id;
+      int type;
+      std::string data;
+      sstr >> id >> type;
+      size_t pos = sstr.tellg();
+      sstr.seekg(pos + 1);
+      getline(sstr, data, '\0');
+      Message message(0, 0, data);
+      return message;
+    }
   }
-  ret = kevent(kq, nullptr, 0, tevent, 1, nullptr);
-  if (ret == -1 || tevent->data == 0) { return Message(0, -1, ""); }
-  char *buffer = new char[tevent->data+1];
-  ret = ::read(tevent->ident, buffer, tevent->data);
-  if (ret <= 0) { return Message(0, -1, ""); }
-  buffer[ret] = '\0';
-  std::stringstream sstr;
-  sstr << buffer;
-  int id;
-  int type;
-  std::string data;
-  sstr >> id >> type;
-  size_t pos = sstr.tellg();
-  sstr.seekg(pos + 1);
-  getline(sstr, data, '\0');
-  Message message(0, 0, data);
-  delete []buffer;
-  delete event;
-  delete tevent;
-  return message;
 }
 
 
@@ -112,9 +142,7 @@ Socket &operator>>(Socket &sock, Message &message)
 
 Socket::~Socket()
 {
-  if (fd != -1)
-  {
-    close(fd);
-    fd = -1;
-  }
+  cleanup();
+  delete []events;
+  delete targetEvent;
 }
