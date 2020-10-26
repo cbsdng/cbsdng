@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-#include "CLI/StringTools.hpp"
+#include "StringTools.hpp"
 
 namespace CLI {
 

@@ -5,7 +5,7 @@
 
 #include <istream>
 
-#include "CLI/Macros.hpp"
+#include "Macros.hpp"
 
 // [CLI11:verbatim]
 #ifdef __has_include

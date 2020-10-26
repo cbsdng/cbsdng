@@ -6,15 +6,17 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/event.h>
+#include <termios.h>
 #include <unistd.h>
 
-#include <cbsdng/shell/socket.h>
+#include "cbsdng/shell/socket.h"
 
 
 Socket::Socket(const std::string &socket_path)
   : socketPath{socket_path}
   , fd{-1}
   , kq{-1}
+  , remaining{0}
 {
   events = new struct kevent[2];
   targetEvent = new struct kevent;
@@ -71,15 +73,30 @@ void Socket::open()
 }
 
 
-const Message Socket::read(size_t size)
+const Message Socket::read()
 {
   int ret;
+  if (remaining > 0)
+  {
+    auto m = readMeta();
+    readSocket(m);
+    return m;
+  }
+  remaining = 0;
   while (true)
   {
     ret = kevent(kq, nullptr, 0, targetEvent, 1, nullptr);
     if (targetEvent->ident == STDIN_FILENO)
     {
-      // TODO: handle keyboard
+      char *input = new char[targetEvent->data+1];
+      ret = ::read(targetEvent->ident, input, targetEvent->data);
+      if (ret > 0)
+      {
+        input[ret] = '\0';
+        Message message(0, 0, input);
+        delete []input;
+        (*this) << message;
+      }
       continue;
     }
     else
@@ -88,38 +105,117 @@ const Message Socket::read(size_t size)
       {
         return Message(0, -1, "Error waiting on kevent.");
       }
-      char *buffer = new char[targetEvent->data + 1];
-      ret = ::read(targetEvent->ident, buffer, targetEvent->data);
-      if (ret <= 0) { return Message(0, -1, "Error reading from socket."); }
-      buffer[ret] = '\0';
-      std::stringstream sstr;
-      sstr << buffer;
-      delete []buffer;
-      int id;
-      int type;
-      std::string data;
-      sstr >> id >> type;
-      size_t pos = sstr.tellg();
-      sstr.seekg(pos + 1);
-      getline(sstr, data, '\0');
-      Message message(0, 0, data);
-      return message;
+      remaining = targetEvent->data;
+      Message m = readMeta();
+      if (!readSocket(m))
+      {
+        m.type(-1);
+      }
+      return m;
     }
   }
+}
+
+
+const Message Socket::message(char const * const buffer)
+{
+  if (buffer == nullptr)
+  {
+    return Message(0, -1, strerror(errno));
+  }
+  std::stringstream sstr;
+  sstr << buffer;
+  int id;
+  int type;
+  std::string data;
+  sstr >> id >> type;
+  size_t pos = sstr.tellg();
+  sstr.seekg(pos + 1);
+  getline(sstr, data, '\0');
+  Message message(0, 0, data);
+  return message;
+}
+
+
+Message Socket::readMeta()
+{
+  Message m;
+  uint32_t data;
+  int rc = ::read(fd, &data, sizeof(data));
+  if (rc <= 0)
+  {
+    remaining = 0;
+    m.type(-1);
+    m.payload(strerror(errno));
+    return m;
+  }
+  m.id(data);
+  remaining -= rc;
+
+  rc = ::read(fd, &data, sizeof(data));
+  if (rc <= 0)
+  {
+    remaining = 0;
+    m.type(-1);
+    m.payload(strerror(errno));
+    return m;
+  }
+  m.type(data);
+  remaining -= rc;
+
+  rc = ::read(fd, &data, sizeof(data));
+  if (rc <= 0)
+  {
+    remaining = 0;
+    m.type(-1);
+    m.payload(strerror(errno));
+    return m;
+  }
+  m.resize(data);
+  remaining -= rc;
+  return m;
+}
+
+bool Socket::readSocket(Message &m)
+{
+  int rc;
+  std::string payload;
+  int total = m.payload().size();
+  payload.resize(total);
+  while (total > 0)
+  {
+    rc = ::read(fd, (char *)payload.data(), total);
+    if (rc <= 0)
+    {
+      remaining = 0;
+      return false;
+    }
+    total -= rc;
+    if (remaining > 0) { remaining -= rc; }
+  }
+  m.payload(payload);
+  return true;
+}
+
+
+bool Socket::write(const uint32_t &size)
+{
+  auto sentSize = ::write(fd, &size, sizeof(size));
+  if (sentSize <= 0)
+  {
+    std::cerr << "Error: " << strerror(errno) << '\n';
+    return false;
+  }
+  return true;
 }
 
 
 bool Socket::write(const std::string &data)
 {
   auto sentSize = ::write(fd, data.data(), data.size());
-  if (sentSize < 0)
+  if (sentSize <= 0)
   {
     std::cerr << "Error: " << strerror(errno) << '\n';
-    return false;
-  }
-  else if (sentSize == 0)
-  {
-    std::cerr << "Error: socket closed!\n";
     return false;
   }
   return true;
@@ -128,7 +224,11 @@ bool Socket::write(const std::string &data)
 
 Socket &operator<<(Socket &sock, const Message &message)
 {
-  sock.write(message.data());
+  sock.write(message.id());
+  sock.write(message.type());
+  const auto &payload= message.payload();
+  sock.write(payload.size());
+  sock.write(payload);
   return sock;
 }
 
