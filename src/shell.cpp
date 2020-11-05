@@ -1,8 +1,8 @@
 #include <iostream>
-#include <replxx.hxx>
 #include <vector>
+#include <replxx.hxx>
 
-#include <cbsdng/shell/shell.h>
+#include "cbsdng/shell/shell.h"
 
 
 Shell::Shell(Parser &p, Socket &s) : parser{p}, socket{s} {}
@@ -10,7 +10,7 @@ Shell::Shell(Parser &p, Socket &s) : parser{p}, socket{s} {}
 
 void Shell::run()
 {
-  std::cout << "Welcome to CBSD interactive shell\n";
+  std::cout << "Welcome to CBSDng interactive shell\n";
   replxx::Replxx rx;
   rx.install_window_change_handler();
   char *raw_home = getenv("HOME");
@@ -87,14 +87,12 @@ void Shell::run()
         message.data(0, 0, data);
         socket << message;
         socket >> message;
-        std::cout << message.getpayload();
         if (data == "ls")
         {
           socket.open();
           message.data(0, Type::BHYVE, data);
           socket << message;
           socket >> message;
-          std::cout << message.getpayload() << std::flush;
         }
       }
     }

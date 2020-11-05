@@ -6,30 +6,17 @@
 // CLI Library includes
 // Order is important for combiner script
 
-#include "CLI/Version.hpp"
-
-#include "CLI/Macros.hpp"
-
-#include "CLI/Optional.hpp"
-
-#include "CLI/StringTools.hpp"
-
-#include "CLI/Error.hpp"
-
-#include "CLI/TypeTools.hpp"
-
-#include "CLI/Split.hpp"
-
-#include "CLI/ConfigFwd.hpp"
-
-#include "CLI/Validators.hpp"
-
-#include "CLI/FormatterFwd.hpp"
-
-#include "CLI/Option.hpp"
-
-#include "CLI/App.hpp"
-
-#include "CLI/Config.hpp"
-
-#include "CLI/Formatter.hpp"
+#include "Version.hpp"
+#include "Macros.hpp"
+#include "Optional.hpp"
+#include "StringTools.hpp"
+#include "Error.hpp"
+#include "TypeTools.hpp"
+#include "Split.hpp"
+#include "ConfigFwd.hpp"
+#include "Validators.hpp"
+#include "FormatterFwd.hpp"
+#include "Option.hpp"
+#include "App.hpp"
+#include "Config.hpp"
+#include "Formatter.hpp"

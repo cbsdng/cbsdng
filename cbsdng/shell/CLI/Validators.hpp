@@ -3,7 +3,7 @@
 // Distributed under the 3-Clause BSD License.  See accompanying
 // file LICENSE or https://github.com/CLIUtils/CLI11 for details.
 
-#include "CLI/TypeTools.hpp"
+#include "TypeTools.hpp"
 
 #include <functional>
 #include <iostream>

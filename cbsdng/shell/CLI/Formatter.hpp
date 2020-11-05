@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include "CLI/App.hpp"
-#include "CLI/Formatter.hpp"
+#include "App.hpp"
+#include "Formatter.hpp"
 
 namespace CLI {
 

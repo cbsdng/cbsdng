@@ -8,9 +8,9 @@
 #include <iostream>
 #include <string>
 
-#include "CLI/App.hpp"
-#include "CLI/ConfigFwd.hpp"
-#include "CLI/StringTools.hpp"
+#include "App.hpp"
+#include "ConfigFwd.hpp"
+#include "StringTools.hpp"
 
 namespace CLI {
 
