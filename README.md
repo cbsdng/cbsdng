@@ -9,17 +9,17 @@ To denotify message dirrection, in the documentation the following arrows will b
 They are not used in the protocol, but are just there to help understanding the messages/protocol.
 
 ```
---> <size> <id> <type> ls
-<-- <size> <id> <type> <output>
+--> <id> <type> <size> ls
+<-- <id> <type> <size> <output>
 ```
 ```
---> <size> <id> <type> start <jail>
-<-- <size> <id> <type> <output>
+--> <id> <type> <size> start <jail>
+<-- <id> <type> <size> <output>
 ```
 
 | Name           | Description                                                              |
 | :------------- | :----------------------------------------------------------------------- |
-| size           | The size of the rest of the message                                      |
 | id             | Identification (not used currently)                                      |
 | type           | Type of message, multiple types can be ORed together into a single value |
+| size           | The size of the rest of the message (the payload)                        |
 | payload        | Command and arguments, keyboard input or command output                  |
