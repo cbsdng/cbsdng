@@ -36,27 +36,27 @@ int main(int argc, char **argv)
     }
     data += ' ';
     data += parser.jail();
-    Message message;
-    message.data(0, 0, data);
-    socket << message;
+    Message command(0, 0, data);
+    socket << command;
+    Message output;
     while (true)
     {
-      socket >> message;
-      if (message.type() == -1) { break; }
-      std::cout << message.payload() << std::flush;
+      socket >> output;
+      if (output.type() == -1) { break; }
+      std::cout << output.payload() << std::flush;
     }
 
     data = parser.subcommandName(0);
     if (data == "ls")
     {
       socket.open();
-      message.data(0, Type::BHYVE, data);
-      socket << message;
+      command.type(Type::BHYVE);
+      socket << command;
       while (true)
       {
-        socket >> message;
-        if (message.type() == -1) { break; }
-        std::cout << message.payload() << std::flush;
+        socket >> output;
+        if (output.type() == -1) { break; }
+        std::cout << output.payload() << std::flush;
       }
     }
   }
