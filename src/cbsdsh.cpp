@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <termios.h>
 #include <unistd.h>
 
@@ -36,13 +37,20 @@ int main(int argc, char **argv)
     }
     data += ' ';
     data += parser.jail();
-    Message message;
-    message.data(0, 0, data);
+    Message message(0, 0, data);
+    int rc;
     socket << message;
     while (true)
     {
       socket >> message;
       if (message.type() == -1) { break; }
+      // if (message.type() == Type::EXIT)
+      // {
+        // std::stringstream s;
+        // s << message.payload();
+        // s >> rc;
+        // break;
+      // }
       std::cout << message.payload() << std::flush;
     }
 
@@ -50,7 +58,7 @@ int main(int argc, char **argv)
     if (data == "ls")
     {
       socket.open();
-      message.data(0, Type::BHYVE, data);
+      message.type(Type::BHYVE);
       socket << message;
       while (true)
       {

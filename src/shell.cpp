@@ -83,14 +83,13 @@ void Shell::run()
           data += ' ';
           data += jail;
         }
-        Message message;
-        message.data(0, 0, data);
+        Message message(0, 0, data);
         socket << message;
         socket >> message;
         if (data == "ls")
         {
           socket.open();
-          message.data(0, Type::BHYVE, data);
+          message.type(Type::BHYVE);
           socket << message;
           socket >> message;
         }
