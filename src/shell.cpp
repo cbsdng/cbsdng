@@ -30,14 +30,8 @@ void Shell::run()
     auto raw_input = rx.input("> ");
     if (raw_input == nullptr)
     {
-      if (errno == EAGAIN)
-      {
-        continue;
-      }
-      else
-      {
-        break;
-      }
+      if (errno == EAGAIN) { continue; }
+      else { break; }
     }
     std::stringstream sstream;
     std::vector<std::string> args;
@@ -53,16 +47,10 @@ void Shell::run()
         ok = false;
         break;
       }
-      if (s == "-h" or s == "--help" or s == "--help-all")
-      {
-        help = true;
-      }
+      if (s == "-h" or s == "--help" or s == "--help-all") { help = true; }
       args.insert(args.begin(), s);
     }
-    if (help)
-    {
-      continue;
-    }
+    if (help) { continue; }
     if (ok)
     {
       auto rc = parser.parse(args);
