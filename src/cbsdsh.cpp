@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <termios.h>
 #include <unistd.h>
 
@@ -38,16 +39,28 @@ int main(int argc, char **argv)
     data += parser.jail();
     Message command(0, 0, data);
     socket << command;
+    int rc;
     Message output;
     while (true)
     {
       socket >> output;
-      if (output.type() == -1) { break; }
+      if (output.type() == -1)
+      {
+        std::cout << "Proxy error: " << output.payload() << std::endl;
+        break;
+      }
+      if (output.type() == Type::EXIT)
+      {
+        std::stringstream s;
+        s << output.payload();
+        s >> rc;
+        if (rc > 0) { return rc; }
+        break;
+      }
       std::cout << output.payload() << std::flush;
     }
 
-    data = parser.subcommandName(0);
-    if (data == "ls")
+    if (parser.subcommandName(0) == "ls")
     {
       socket.open();
       command.type(Type::BHYVE);
@@ -55,7 +68,20 @@ int main(int argc, char **argv)
       while (true)
       {
         socket >> output;
-        if (output.type() == -1) { break; }
+        if (output.type() == -1)
+        {
+          std::cout << "Proxy error: " << output.payload() << std::endl;
+          std::cout << output.payload() << std::endl;
+          break;
+        }
+        if (output.type() == Type::EXIT)
+        {
+          std::stringstream s;
+          s << output.payload();
+          s >> rc;
+          if (rc > 0) { return rc; }
+          break;
+        }
         std::cout << output.payload() << std::flush;
       }
     }
