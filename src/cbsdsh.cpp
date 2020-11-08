@@ -37,34 +37,35 @@ int main(int argc, char **argv)
     }
     data += ' ';
     data += parser.jail();
-    Message message(0, 0, data);
+    Message command(0, 0, data);
+    socket << command;
     int rc;
-    socket << message;
+    Message output;
     while (true)
     {
-      socket >> message;
-      if (message.type() == -1) { break; }
-      // if (message.type() == Type::EXIT)
-      // {
-        // std::stringstream s;
-        // s << message.payload();
-        // s >> rc;
-        // break;
-      // }
-      std::cout << message.payload() << std::flush;
+      socket >> output;
+      if (output.type() == -1) { break; }
+      if (output.type() == Type::EXIT)
+      {
+        std::stringstream s;
+        s << output.payload();
+        s >> rc;
+        break;
+      }
+      std::cout << output.payload() << std::flush;
     }
 
     data = parser.subcommandName(0);
     if (data == "ls")
     {
       socket.open();
-      message.type(Type::BHYVE);
-      socket << message;
+      command.type(Type::BHYVE);
+      socket << command;
       while (true)
       {
-        socket >> message;
-        if (message.type() == -1) { break; }
-        std::cout << message.payload() << std::flush;
+        socket >> output;
+        if (output.type() == -1) { break; }
+        std::cout << output.payload() << std::flush;
       }
     }
   }
