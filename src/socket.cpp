@@ -103,7 +103,8 @@ const Message Socket::read()
     {
       if (ret == -1 || targetEvent->data == 0)
       {
-        return Message(0, -1, "Error waiting on kevent.");
+        if (errno == 0) { return Message(0, Type::CONNECTION_CLOSED, ""); }
+        return Message(0, -1, strerror(errno));
       }
       remaining = targetEvent->data;
       Message m = readMeta();
