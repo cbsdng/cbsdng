@@ -47,7 +47,7 @@ int main(int argc, char **argv)
       if (output.type() == -1)
       {
         std::cout << "Proxy error: " << output.payload() << std::endl;
-        break;
+        return 1;
       }
       if (output.type() == Type::EXIT)
       {
@@ -57,6 +57,7 @@ int main(int argc, char **argv)
         if (rc > 0) { return rc; }
         break;
       }
+      if (output.type() == Type::CONNECTION_CLOSED) { break; }
       std::cout << output.payload() << std::flush;
     }
 
@@ -71,8 +72,7 @@ int main(int argc, char **argv)
         if (output.type() == -1)
         {
           std::cout << "Proxy error: " << output.payload() << std::endl;
-          std::cout << output.payload() << std::endl;
-          break;
+          return 1;
         }
         if (output.type() == Type::EXIT)
         {
