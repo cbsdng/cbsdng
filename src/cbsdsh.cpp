@@ -40,6 +40,7 @@ int main(int argc, char **argv)
     Message command(0, 0, data);
     socket << command;
     Message output;
+    int rc;
     while (true)
     {
       socket >> output;
