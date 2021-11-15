@@ -12,6 +12,7 @@ They are not used in the protocol, but are just there to help understanding the 
 --> <id> <type> <size> ls
 <-- <id> <type> <size> <output>
 ```
+
 ```
 --> <id> <type> <size> start <jail>
 <-- <id> <type> <size> <output>
